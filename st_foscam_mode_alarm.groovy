@@ -34,7 +34,6 @@ def updated() {
 }
 
 def modeAlarm(evt) {
-	log.debug "MODE ALARM HAPPENING"
     if (evt.value == alarmMode) {
         log.trace "Mode changed to ${evt.value}. Enabling Foscam alarm."
         cameras?.alarmOn()

@@ -55,7 +55,7 @@ def checkTime(evt) {
         def currentTime = new Date()
     	def startUTC = timeToday(startTime)
     	def endUTC = timeToday(endTime)
-	    if((currentTime > startUTC && currentTime < endUTC && startUTC < endUTC) || (currentTime > startUTC && startUTC > endUTC) || (currentTime < startUTC && currentTime < endUTC)) {
+	    if((currentTime > startUTC && currentTime < endUTC && startUTC < endUTC) || (currentTime > startUTC && startUTC > endUTC) || (currentTime < endUTC && endUTC < startUTC)) {
     		modeAlarm(evt)
     	}
     }

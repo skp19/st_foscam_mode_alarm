@@ -22,15 +22,19 @@ preferences {
 		input "cameras", "capability.imageCapture", multiple: true
         input "notify", "bool", title: "Notification?"
 	}
+    section("Only between these times...") {
+    	input "startTime", "time", title: "Start Time", required: false
+        input "endTime", "time", title: "End Time", required: false
+    }
 }
 
 def installed() {
-    subscribe(location, modeAlarm)
+    subscribe(location, checkTime)
 }
 
 def updated() {
 	unsubscribe()
-    subscribe(location, modeAlarm)
+    subscribe(location, checkTime)
 }
 
 def modeAlarm(evt) {
@@ -43,6 +47,20 @@ def modeAlarm(evt) {
         log.trace "Mode changed to ${evt.value}. Disabling Foscam alarm."
         cameras?.alarmOff()
         sendMessage("Foscam alarm disabled")
+    }
+}
+
+def checkTime(evt) {
+    if(startTime && endTime) {
+        def currentTime = new Date()
+    	def startUTC = timeToday(startTime)
+    	def endUTC = timeToday(endTime)
+	    if((currentTime > startUTC && currentTime < endUTC && startUTC < endUTC) || (currentTime > startUTC && startUTC > endUTC) || (currentTime < startUTC && currentTime < endUTC)) {
+    		modeAlarm(evt)
+    	}
+    }
+    else {
+    	modeAlarm(evt)
     }
 }
 

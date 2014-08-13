@@ -16,7 +16,7 @@ definition(
 
 preferences {
 	section("When the mode changes to...") {
-		input "alarmMode", "mode"
+		input "alarmMode", "mode", multiple: true
 	}
     section("Enable these Foscam alarms...") {
 		input "cameras", "capability.imageCapture", multiple: true
@@ -38,7 +38,7 @@ def updated() {
 }
 
 def modeAlarm(evt) {
-    if (evt.value == alarmMode) {
+    if (evt.value in alarmMode) {
         log.trace "Mode changed to ${evt.value}. Enabling Foscam alarm."
         cameras?.alarmOn()
         sendMessage("Foscam alarm enabled")    	
